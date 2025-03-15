@@ -1,0 +1,1156 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mega Cassino - Estilo Papi Games</title>
+    <style>
+        :root {
+            --primary: #1E0B36;
+            --secondary: #CA006C;
+            --accent: #FF9E00;
+            --text-light: #ffffff;
+            --text-dark: #121212;
+            --success: #00C851;
+            --danger: #ff4444;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: var(--text-light);
+            min-height: 100vh;
+        }
+        
+        header {
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--accent);
+        }
+        
+        .logo span {
+            margin-left: 0.5rem;
+        }
+        
+        .logo i {
+            font-size: 2.2rem;
+        }
+        
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 1.5rem;
+        }
+        
+        nav a {
+            color: var(--text-light);
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 1.1rem;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            transition: all 0.3s ease;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--accent);
+        }
+        
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .user-menu button {
+            padding: 0.5rem 1rem;
+            border: none;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .login-btn {
+            background-color: transparent;
+            color: var(--text-light);
+            border: 1px solid var(--text-light);
+        }
+        
+        .login-btn:hover {
+            border-color: var(--accent);
+            color: var(--accent);
+        }
+        
+        .register-btn {
+            background-color: var(--accent);
+            color: var(--text-dark);
+        }
+        
+        .register-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero p {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .hero-btn {
+            background-color: var(--accent);
+            color: var(--text-dark);
+            padding: 0.8rem 2rem;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .hero-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .games-section {
+            padding: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .section-title {
+            font-size: 2rem;
+            margin-bottom: 2rem;
+            text-align: center;
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            display: block;
+            width: 100px;
+            height: 4px;
+            background-color: var(--accent);
+            margin: 1rem auto 0;
+            border-radius: 2px;
+        }
+        
+        .games-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .game-card {
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 8px;
+            overflow: hidden;
+            transition: all 0.3s;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 20px rgba(0, 0, 0, 0.4);
+        }
+        
+        .game-img {
+            height: 180px;
+            width: 100%;
+            background-color: #333;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .game-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: all 0.5s;
+        }
+        
+        .game-card:hover .game-img img {
+            transform: scale(1.1);
+        }
+        
+        .game-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            opacity: 0;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .game-card:hover .game-overlay {
+            opacity: 1;
+        }
+        
+        .play-now-btn {
+            background-color: var(--accent);
+            color: var(--text-dark);
+            border: none;
+            padding: 0.5rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transform: translateY(20px);
+            transition: all 0.3s;
+        }
+        
+        .game-card:hover .play-now-btn {
+            transform: translateY(0);
+        }
+        
+        .game-info {
+            padding: 1rem;
+        }
+        
+        .game-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .game-description {
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.7);
+            margin-bottom: 1rem;
+        }
+        
+        .game-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.9rem;
+        }
+        
+        .jackpot {
+            color: var(--accent);
+            font-weight: bold;
+        }
+        
+        .players-count {
+            color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .features-section {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 4rem 2rem;
+            margin-top: 3rem;
+        }
+        
+        .features-container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .feature-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            padding: 2rem;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+        
+        .feature-title {
+            font-size: 1.3rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .feature-description {
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 0.9rem;
+        }
+        
+        .jackpot-section {
+            text-align: center;
+            padding: 3rem 2rem;
+            margin: 3rem auto;
+            max-width: 1200px;
+        }
+        
+        .jackpot-value {
+            font-size: 3.5rem;
+            font-weight: 700;
+            color: var(--accent);
+            margin: 1rem 0;
+            text-shadow: 0 0 10px rgba(255, 158, 0, 0.5);
+        }
+        
+        .jackpot-label {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+        }
+        
+        #slot-machine {
+            width: 300px;
+            margin: 2rem auto;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 1rem;
+            border-radius: 8px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+        
+        .reels {
+            display: flex;
+            justify-content: space-between;
+            background-color: #fff;
+            padding: 0.5rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        
+        .reel {
+            width: 80px;
+            height: 80px;
+            background-color: #f5f5f5;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2rem;
+            border: 2px solid #ddd;
+            border-radius: 4px;
+        }
+        
+        .spin-btn {
+            width: 100%;
+            padding: 0.8rem;
+            background-color: var(--accent);
+            color: var(--text-dark);
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .spin-btn:hover {
+            background-color: #e08e00;
+        }
+        
+        footer {
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .footer-links {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+        
+        .footer-links a:hover {
+            color: var(--accent);
+        }
+        
+        .social-links {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.1);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--text-light);
+            font-size: 1.2rem;
+            transition: all 0.3s;
+        }
+        
+        .social-icon:hover {
+            background-color: var(--accent);
+            transform: translateY(-3px);
+        }
+        
+        .copyright {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.9rem;
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background-color: var(--primary);
+            border-radius: 8px;
+            width: 90%;
+            max-width: 400px;
+            padding: 2rem;
+            position: relative;
+            animation: modalFadeIn 0.3s;
+        }
+        
+        @keyframes modalFadeIn {
+            from {opacity: 0; transform: translateY(-20px);}
+            to {opacity: 1; transform: translateY(0);}
+        }
+        
+        .close-modal {
+            position: absolute;
+            top: 1rem;
+            right: 1rem;
+            font-size: 1.5rem;
+            color: rgba(255, 255, 255, 0.7);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .close-modal:hover {
+            color: var(--accent);
+        }
+        
+        .modal-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-size: 0.9rem;
+           color: rgba(255, 255, 255, 0.7);
+        }
+        
+        .form-group input {
+            width: 100%;
+            padding: 0.8rem;
+            border-radius: 4px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--text-light);
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(255, 158, 0, 0.2);
+        }
+        
+        .form-btn {
+            width: 100%;
+            padding: 0.8rem;
+            border: none;
+            border-radius: 4px;
+            background-color: var(--accent);
+            color: var(--text-dark);
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .form-btn:hover {
+            opacity: 0.9;
+            transform: translateY(-2px);
+        }
+        
+        .form-footer {
+            text-align: center;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+            color: rgba(255, 255, 255, 0.6);
+        }
+        
+        .form-footer a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+        
+        .form-footer a:hover {
+            text-decoration: underline;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            header {
+                flex-direction: column;
+                padding: 1rem;
+            }
+            
+            .logo {
+                margin-bottom: 1rem;
+            }
+            
+            nav ul {
+                flex-direction: column;
+                text-align: center;
+                gap: 0.5rem;
+            }
+            
+            .user-menu {
+                margin-top: 1rem;
+                width: 100%;
+                justify-content: center;
+            }
+            
+            .hero h1 {
+                font-size: 2rem;
+            }
+            
+            .jackpot-value {
+                font-size: 2.5rem;
+            }
+        }
+        
+        /* Animation and effects */
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .pulse-animation {
+            animation: pulse 2s infinite;
+        }
+        
+        /* Game specific styles */
+        .popular-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--danger);
+            color: var(--text-light);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .new-badge {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: var(--success);
+            color: var(--text-light);
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        /* Live chat support bubble */
+        .chat-support {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background-color: var(--accent);
+            color: var(--text-dark);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            cursor: pointer;
+            transition: all 0.3s;
+            z-index: 90;
+        }
+        
+        .chat-support:hover {
+            transform: scale(1.1);
+        }
+        
+        /* Notification badge */
+        .notification {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background-color: var(--danger);
+            color: var(--text-light);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 0.7rem;
+            font-weight: 600;
+        }
+        
+        /* Game categories tab navigation */
+        .game-categories {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+        
+        .category-tab {
+            padding: 0.5rem 1rem;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .category-tab:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
+        
+        .category-tab.active {
+            background-color: var(--accent);
+            color: var(--text-dark);
+            font-weight: 600;
+        }
+        
+        /* Winners ticker */
+        .winners-ticker {
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 0.8rem 0;
+            overflow: hidden;
+            position: relative;
+            margin: 3rem 0;
+        }
+        
+        .ticker-content {
+            display: flex;
+            white-space: nowrap;
+            animation: ticker 20s linear infinite;
+        }
+        
+        .ticker-item {
+            margin-right: 3rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .winner-avatar {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background-color: #555;
+            margin-right: 0.5rem;
+        }
+        
+        .winner-name {
+            font-weight: 600;
+            margin-right: 0.5rem;
+        }
+        
+        .winner-game {
+            color: rgba(255, 255, 255, 0.7);
+            margin-right: 0.5rem;
+        }
+        
+        .winner-amount {
+            color: var(--success);
+            font-weight: 600;
+        }
+        
+        @keyframes ticker {
+            0% { transform: translateX(100%); }
+            100% { transform: translateX(-100%); }
+        }
+        
+        /* Responsive table for transactions/history */
+        .transactions-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 2rem 0;
+        }
+        
+        .transactions-table th,
+        .transactions-table td {
+            padding: 0.8rem;
+            text-align: left;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .transactions-table th {
+            background-color: rgba(0, 0, 0, 0.3);
+            color: var(--accent);
+            font-weight: 600;
+        }
+        
+        .transactions-table tr:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        
+        /* Status indicators */
+        .status-pending {
+            color: var(--accent);
+        }
+        
+        .status-completed {
+            color: var(--success);
+        }
+        
+        .status-failed {
+            color: var(--danger);
+        }
+        
+        /* Loading spinner */
+        .spinner {
+            width: 40px;
+            height: 40px;
+            margin: 100px auto;
+            border: 4px solid rgba(255, 255, 255, 0.3);
+            border-top: 4px solid var(--accent);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <i class="fas fa-dice"></i>
+            <span>Zuge Games</span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="#">Início</a></li>
+                <li><a href="#">Jogos</a></li>
+                <li><a href="#">Promoções</a></li>
+                <li><a href="#">VIP</a></li>
+                <li><a href="#">Suporte</a></li>
+            </ul>
+        </nav>
+        <div class="user-menu">
+            <button class="login-btn">Entrar</button>
+            <button class="register-btn">Cadastre-se</button>
+        </div>
+    </header>
+    
+    <section class="hero">
+        <h1>Bem-vindo ao Mega Cassino</h1>
+        <p>O melhor cassino online do Brasil! Jogue os melhores jogos e ganhe prêmios incríveis. Novos jogadores recebem R$100 de bônus no primeiro depósito.</p>
+        <button class="hero-btn">Comece a Jogar</button>
+    </section>
+    
+    <section class="jackpot-section">
+        <h2 class="section-title">Jackpot Total</h2>
+        <div class="jackpot-value pulse-animation">R$ 1.567.890,00</div>
+        <p class="jackpot-label">E continua aumentando! Seja o próximo ganhador.</p>
+        
+        <div id="slot-machine">
+            <div class="reels">
+                <div class="reel">🍒</div>
+                <div class="reel">🍋</div>
+                <div class="reel">🍇</div>
+            </div>
+            <button class="spin-btn">GIRAR</button>
+        </div>
+    </section>
+    
+    <section class="games-section">
+        <h2 class="section-title">Jogos em Destaque</h2>
+        
+        <div class="game-categories">
+            <div class="category-tab active">Todos</div>
+            <div class="category-tab">Slots</div>
+            <div class="category-tab">Crash</div>
+            <div class="category-tab">Roleta</div>
+            <div class="category-tab">Blackjack</div>
+            <div class="category-tab">Bacará</div>
+        </div>
+        
+        <div class="games-grid">
+            <div class="game-card">
+                <div class="game-img">
+                    <img src="https://via.placeholder.com/250x180" alt="Jogo Fortune Tiger">
+                    <div class="game-overlay">
+                        <button class="play-now-btn">Jogar Agora</button>
+                    </div>
+                    <div class="popular-badge">Popular</div>
+                </div>
+                <div class="game-info">
+                    <h3 class="game-title">Fortune Tiger</h3>
+                    <p class="game-description">Descubra a sorte do tigre e ganhe fortunas no nosso jogo mais popular!</p>
+                    <div class="game-meta">
+                        <span class="jackpot">R$ 50.000</span>
+                        <span class="players-count">1243 jogando</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-img">
+                    <img src="https://via.placeholder.com/250x180" alt="Jogo Aviator">
+                    <div class="game-overlay">
+                        <button class="play-now-btn">Jogar Agora</button>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <h3 class="game-title">Aviator</h3>
+                    <p class="game-description">Veja o avião subir e decida quando sacar seus ganhos antes que ele desapareça!</p>
+                    <div class="game-meta">
+                        <span class="jackpot">R$ 25.000</span>
+                        <span class="players-count">987 jogando</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-img">
+                    <img src="https://via.placeholder.com/250x180" alt="Jogo Mines">
+                    <div class="game-overlay">
+                        <button class="play-now-btn">Jogar Agora</button>
+                    </div>
+                    <div class="new-badge">Novo</div>
+                </div>
+                <div class="game-info">
+                    <h3 class="game-title">Mines</h3>
+                    <p class="game-description">Evite as minas e descubra os tesouros escondidos neste jogo de estratégia!</p>
+                    <div class="game-meta">
+                        <span class="jackpot">R$ 15.000</span>
+                        <span class="players-count">753 jogando</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="game-card">
+                <div class="game-img">
+                    <img src="https://via.placeholder.com/250x180" alt="Jogo Spaceman">
+                    <div class="game-overlay">
+                        <button class="play-now-btn">Jogar Agora</button>
+                    </div>
+                </div>
+                <div class="game-info">
+                    <h3 class="game-title">Spaceman</h3>
+                    <p class="game-description">Acompanhe o astronauta na sua viagem espacial e multiplique seus ganhos!</p>
+                    <div class="game-meta">
+                        <span class="jackpot">R$ 20.000</span>
+                        <span class="players-count">621 jogando</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 2rem;">
+            <button class="hero-btn">Ver Todos os Jogos</button>
+        </div>
+    </section>
+    
+    <div class="winners-ticker">
+        <div class="ticker-content">
+            <div class="ticker-item">
+                <div class="winner-avatar"></div>
+                <span class="winner-name">João S.</span>
+                <span class="winner-game">Fortune Tiger</span>
+                <span class="winner-amount">R$ 12.540</span>
+            </div>
+            <div class="ticker-item">
+                <div class="winner-avatar"></div>
+                <span class="winner-name">Maria L.</span>
+                <span class="winner-game">Aviator</span>
+                <span class="winner-amount">R$ 8.750</span>
+            </div>
+            <div class="ticker-item">
+                <div class="winner-avatar"></div>
+                <span class="winner-name">Pedro R.</span>
+                <span class="winner-game">Mines</span>
+                <span class="winner-amount">R$ 5.320</span>
+            </div>
+            <div class="ticker-item">
+                <div class="winner-avatar"></div>
+                <span class="winner-name">Ana C.</span>
+                <span class="winner-game">Roleta</span>
+                <span class="winner-amount">R$ 15.870</span>
+            </div>
+            <div class="ticker-item">
+                <div class="winner-avatar"></div>
+                <span class="winner-name">Carlos M.</span>
+                <span class="winner-game">Blackjack</span>
+                <span class="winner-amount">R$ 9.650</span>
+            </div>
+        </div>
+    </div>
+    
+    <section class="benefits-section">
+        <h2 class="section-title">Por Que Escolher o Mega Cassino</h2>
+        <div class="benefits-grid">
+            <div class="benefit-card">
+                <div class="benefit-icon">🎁</div>
+                <h3>Bônus Generosos</h3>
+                <p>Receba até R$1.000 em bônus no seu primeiro depósito e aproveite promoções diárias!</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">🔒</div>
+                <h3>100% Seguro</h3>
+                <p>Utilizamos criptografia avançada para proteger seus dados e transações financeiras.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">💰</div>
+                <h3>Pagamentos Rápidos</h3>
+                <p>Saques processados em até 24 horas com múltiplos métodos de pagamento disponíveis.</p>
+            </div>
+            <div class="benefit-card">
+                <div class="benefit-icon">🎮</div>
+                <h3>Jogos Exclusivos</h3>
+                <p>Acesso a mais de 1.000 jogos dos melhores desenvolvedores do mundo!</p>
+            </div>
+        </div>
+    </section>
+    
+    <section class="promotion-section">
+        <div class="promotion-card">
+            <div class="promotion-content">
+                <h2>Bônus de Boas-Vindas</h2>
+                <h3>100% até R$1.000 + 100 Rodadas Grátis</h3>
+                <p>Dobre seu primeiro depósito e ganhe rodadas grátis nos melhores slots.</p>
+                <button class="hero-btn">Resgatar Agora</button>
+            </div>
+            <div class="promotion-image">
+                <img src="https://via.placeholder.com/400x300" alt="Bônus de Boas-Vindas">
+            </div>
+        </div>
+    </section>
+    
+    <section class="payment-methods">
+        <h2 class="section-title">Métodos de Pagamento</h2>
+        <div class="payment-logos">
+            <div class="payment-logo">Visa</div>
+            <div class="payment-logo">Mastercard</div>
+            <div class="payment-logo">PIX</div>
+            <div class="payment-logo">Boleto</div>
+            <div class="payment-logo">Bitcoin</div>
+            <div class="payment-logo">Transferência</div>
+        </div>
+    </section>
+    
+    <section class="testimonials-section">
+        <h2 class="section-title">O Que Nossos Jogadores Dizem</h2>
+        <div class="testimonials-grid">
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Melhor cassino online que já joguei! Pagamentos rápidos e suporte excelente."</p>
+                <div class="testimonial-author">Marcos S.</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★★</div>
+                <p class="testimonial-text">"Ganhei R$5.000 no Fortune Tiger e recebi meu pagamento no mesmo dia. Recomendo!"</p>
+                <div class="testimonial-author">Juliana P.</div>
+            </div>
+            <div class="testimonial-card">
+                <div class="testimonial-stars">★★★★☆</div>
+                <p class="testimonial-text">"Excelente variedade de jogos e interface muito intuitiva. Apenas melhoraria o app mobile."</p>
+                <div class="testimonial-author">Roberto L.</div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="faq-section">
+        <h2 class="section-title">Perguntas Frequentes</h2>
+        <div class="faq-container">
+            <div class="faq-item">
+                <div class="faq-question">Como faço para criar uma conta?</div>
+                <div class="faq-answer">Clique no botão "Cadastre-se" no topo da página, preencha o formulário com seus dados e confirme seu e-mail para ativar sua conta.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Qual é o depósito mínimo?</div>
+                <div class="faq-answer">O valor mínimo para depósito é de R$20. Aceitamos diversas formas de pagamento incluindo cartões de crédito, PIX e transferências bancárias.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Como funciona o programa VIP?</div>
+                <div class="faq-answer">Nosso programa VIP possui 5 níveis. Quanto mais você joga, mais pontos acumula e sobe de nível, desbloqueando benefícios exclusivos como cashback, bônus especiais e gerente de conta dedicado.</div>
+            </div>
+            <div class="faq-item">
+                <div class="faq-question">Os jogos são seguros e justos?</div>
+                <div class="faq-answer">Sim! Todos os nossos jogos são certificados e utilizam geradores de números aleatórios verificados por entidades independentes, garantindo total transparência e justiça nas chances de ganho.</div>
+            </div>
+        </div>
+    </section>
+    
+    <section class="newsletter-section">
+        <div class="newsletter-container">
+            <h2>Fique por dentro das novidades!</h2>
+            <p>Inscreva-se para receber ofertas exclusivas, bônus e notícias do Mega Cassino.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Seu e-mail" required>
+                <button type="submit" class="form-btn">Inscrever-se</button>
+            </form>
+        </div>
+    </section>
+    
+    <footer>
+        <div class="footer-grid">
+            <div class="footer-column">
+                <div class="logo">
+                    <i class="fas fa-dice"></i>
+                    <span>Mega Cassino</span>
+                </div>
+                <p>A sua melhor opção para jogos online no Brasil. Jogos de cassino, slots, apostas esportivas e muito mais!</p>
+                <div class="social-icons">
+                    <a href="#" class="social-icon"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-youtube"></i></a>
+                </div>
+            </div>
+            <div class="footer-column">
+                <h3>Links Rápidos</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Sobre Nós</a></li>
+                    <li><a href="#">Termos e Condições</a></li>
+                    <li><a href="#">Política de Privacidade</a></li>
+                    <li><a href="#">Jogo Responsável</a></li>
+                    <li><a href="#">Afiliados</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Jogos</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Slots</a></li>
+                    <li><a href="#">Jogos de Mesa</a></li>
+                    <li><a href="#">Cassino ao Vivo</a></li>
+                    <li><a href="#">Crash Games</a></li>
+                    <li><a href="#">Apostas Esportivas</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h3>Suporte</h3>
+                <ul class="footer-links">
+                    <li><a href="#">Central de Ajuda</a></li>
+                    <li><a href="#">Chat ao Vivo</a></li>
+                    <li><a href="#">Contato</a></li>
+                    <li><a href="#">FAQ</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 Mega Cassino. Todos os direitos reservados.</p>
+            <p>Jogue com responsabilidade. Proibido para menores de 18 anos.</p>
+        </div>
+    </footer>
+    
+    <div class="chat-support">
+        <i class="fas fa-comments"></i>
+        <div class="notification">1</div>
+    </div>
+    <script  src="main.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <script>
+        // Script para animação básica do caça-níquel
+        document.querySelector('.spin-btn').addEventListener('click', function() {
+            const reels = document.querySelectorAll('.reel');
+            const symbols = ['🍒', '🍋', '🍇', '🍉', '💎', '7️⃣', '🎰'];
+            
+            reels.forEach(reel => {
+                reel.style.animation = 'none';
+                setTimeout(() => {
+                    reel.style.animation = 'spin 0.5s ease-out';
+                    setTimeout(() => {
+                        reel.textContent = symbols[Math.floor(Math.random() * symbols.length)];
+                    }, 500);
+                }, 10);
+            });
+        });
+        
+        // Script para abrir/fechar perguntas frequentes
+        document.querySelectorAll('.faq-question').forEach(question => {
+            question.addEventListener('click', () => {
+                const answer = question.nextElementSibling;
+                answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+            });
+        });
+        
+    </script>
+    
+</body>
+</html>
