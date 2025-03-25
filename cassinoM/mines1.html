@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo Mines</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            text-align: center;
+            background-color: #f0f0f0;
+            padding: 20px;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 36px;
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        p {
+            font-size: 18px;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(5, 70px);
+            gap: 10px;
+            justify-content: center;
+            margin: 20px auto;
+            transition: all 0.3s ease;
+        }
+
+        .cell {
+            width: 70px;
+            height: 70px;
+            background-color: #ccc;
+            border-radius: 8px;
+            border: 2px solid #888;
+            cursor: pointer;
+            font-size: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .cell:hover {
+            background-color: #b0b0b0;
+            transform: scale(1.1);
+        }
+
+        .cell.clicked {
+            background-color: #4caf50;
+        }
+
+        .cell.bomb {
+            background-color: #f44336;
+        }
+
+        .cell.safe {
+            background-color: #81c784;
+        }
+
+        .cell:active {
+            transform: scale(0.98);
+        }
+
+        #bombCount {
+            font-size: 20px;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        #credits {
+            font-size: 20px;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #4caf50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        button:focus {
+            outline: none;
+        }
+
+        .message {
+            font-size: 24px;
+            color: #ff9800;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .input-container {
+            margin-bottom: 20px;
+        }
+
+        .input-container input {
+            padding: 8px;
+            font-size: 18px;
+            width: 60px;
+            text-align: center;
+        }
+    </style>
+</head>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo Mines</title>
+    <style>
+        /* Manter o estilo original */
+    </style>
+</head>
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jogo Mines</title>
+    <style>
+        /* Manter o estilo original */
+    </style>
+</head>
+<body>
+    <h1>Jogo Mines</h1>
+    <p>Clique nos blocos para jogar. Evite as bombas!</p>
+    
+    <div class="input-container">
+        <label for="bombInput">Escolha o número de bombas (máximo 10): </label>
+        <input type="number" id="bombInput" min="1" max="10" value="5">
+    </div>
+    
+    <div class="input-container">
+        <label for="betInput">Digite o valor da aposta: </label>
+        <input type="number" id="betInput" min="1" value="10">
+    </div>
+
+    <button onclick="startGame()">Iniciar Jogo</button>
+    <button onclick="stopGame()" disabled id="stopButton">Parar</button>
+    <div id="bombCount">Bombas restantes: 5</div>
+    <div id="credits">Créditos: 100</div>
+    <div class="grid" id="gameBoard"></div>
+    <div id="message" class="message"></div>
+
+    <script>
+        const size = 5;
+        let bombCount = 5;
+        let board = [];
+        let bombs = new Set();
+        let remainingBombs = bombCount;
+        let credits = 100;
+        let betAmount = 10;
+        let gameOver = false;
+        let rewardFactor = 1; // Fator de recompensa
+        let accumulatedReward = 0; // Recompensa acumulada
+        let initialCredits = credits; // Créditos iniciais antes da aposta
+
+        function startGame() {
+            // Obter valores de entrada
+            const bombInput = document.getElementById("bombInput").value;
+            const betInput = document.getElementById("betInput").value;
+
+            bombCount = Math.min(Math.max(parseInt(bombInput), 1), size * size); // Validar bombas
+            betAmount = Math.max(parseInt(betInput), 1); // Validar aposta
+
+            // Verificar se o jogador tem créditos suficientes
+            if (credits < betAmount) {
+                alert("Você não tem créditos suficientes para apostar.");
+                return;
+            }
+
+            // Salvar créditos iniciais e deduzir a aposta
+            initialCredits = credits;
+            credits -= betAmount;
+            resetGame();
+        }
+
+        function createBoard() {
+            const grid = document.getElementById("gameBoard");
+            grid.innerHTML = "";
+            board = [];
+            bombs.clear();
+            remainingBombs = bombCount;
+            gameOver = false;
+            rewardFactor = 1; // Resetar o fator de recompensa
+            accumulatedReward = 0; // Resetar a recompensa acumulada
+            document.getElementById("bombCount").textContent = `Bombas restantes: ${remainingBombs}`;
+            document.getElementById("message").textContent = "";
+            document.getElementById("credits").textContent = `Créditos: ${credits}`;
+            document.getElementById("stopButton").disabled = false; // Habilitar botão "Parar"
+
+            // Colocar bombas aleatoriamente
+            while (bombs.size < bombCount) {
+                bombs.add(Math.floor(Math.random() * size * size));
+            }
+
+            for (let i = 0; i < size * size; i++) {
+                const cell = document.createElement("div");
+                cell.classList.add("cell");
+                cell.dataset.index = i;
+                cell.onclick = () => revealCell(cell, i);
+                grid.appendChild(cell);
+                board.push(cell);
+            }
+        }
+
+        function revealCell(cell, index) {
+            if (gameOver || cell.classList.contains("clicked")) {
+                return;
+            }
+
+            if (bombs.has(index)) {
+                cell.classList.add("bomb");
+                showMessage("Você perdeu! Jogo reiniciado.", "error");
+                gameOver = true;
+                resetGame();
+            } else {
+                cell.classList.add("clicked");
+                cell.onclick = null;
+
+                // Incrementar recompensa progressiva
+                rewardFactor += 0.5; // Aumentar o fator de recompensa
+                accumulatedReward += betAmount * rewardFactor;
+
+                // Atualizar interface
+                document.getElementById("message").textContent = `Recompensa acumulada: +${accumulatedReward.toFixed(2)} créditos`;
+            }
+        }
+
+        function stopGame() {
+            if (!gameOver) {
+                // Devolver a aposta inicial e adicionar a recompensa acumulada
+                credits = initialCredits + accumulatedReward;
+                document.getElementById("credits").textContent = `Créditos: ${credits}`;
+                showMessage(`Você parou e ganhou ${accumulatedReward.toFixed(2)} créditos!`, "success");
+                gameOver = true;
+                resetGame();
+            }
+        }
+
+        function resetGame() {
+            createBoard();
+            document.getElementById("stopButton").disabled = true; // Desabilitar botão "Parar"
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.getElementById("message");
+            messageDiv.textContent = message;
+
+            if (type === "success") {
+                messageDiv.style.color = "#4caf50";
+            } else if (type === "error") {
+                messageDiv.style.color = "#f44336";
+            } else {
+                messageDiv.style.color = "#ff9800";
+            }
+        }
+
+        createBoard();
+    </script>
+</body>
+</html>

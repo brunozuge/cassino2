@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Royal Black Diamond Casino</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+    :root {
+    --primary-color: #1a2b3c;
+    --secondary-color: #2c3e50;
+    --accent-color: #3498db;
+    --text-color: #ecf0f1;
+    --highlight-color: #f1c40f;
+    --background-gradient: linear-gradient(45deg, #16213e, #0f3460);
+    --card-background: linear-gradient(135deg, #2c3e50, #34495e);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Arial', sans-serif;
+}
+
+body {
+    background: var(--background-gradient);
+    color: var(--text-color);
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    perspective: 1000px;
+}
+
+/* Container principal */
+#casino-container {
+    width: 95vw;
+    max-width: 1400px;
+    min-height: 90vh;
+    background: rgba(26, 43, 60, 0.85);
+    backdrop-filter: blur(10px);
+    border-radius: 15px;
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    box-shadow: 0 15px 50px rgba(0, 0, 0, 0.3);
+    overflow: hidden;
+    padding: 20px;
+}
+
+/* Área principal do jogo */
+#game-area {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    padding: 20px;
+    background: rgba(44, 62, 80, 0.6);
+    border-radius: 10px;
+}
+
+/* Estatísticas e ranking */
+#game-stats, #leaderboard {
+    background: rgba(255, 255, 255, 0.1);
+    padding: 15px;
+    border-radius: 5px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 10px;
+    text-align: center;
+}
+
+#game-stats p, #leaderboard li {
+    font-size: 16px;
+    color: var(--text-color);
+    margin: 5px 0;
+}
+
+/* Sidebar */
+#sidebar {
+    background: var(--secondary-color);
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+}
+
+/* Controles de aposta */
+#bet-controls {
+    display: flex;
+    flex-direction: column; /* Alinha os elementos na vertical */
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+#bet-amount {
+    width: 120px;
+    padding: 8px;
+    font-size: 16px;
+    border: 2px solid var(--accent-color);
+    border-radius: 5px;
+    text-align: center;
+    background: var(--text-color);
+    color: #333;
+    margin-top: 15px; /* Aumenta o espaço acima do campo */
+}
+
+.control-button {
+    width: 120px; /* Define um tamanho fixo para manter alinhado */
+    background: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.2s;
+}
+
+.control-button:hover {
+    background: #217dbb;
+    transform: scale(1.05);
+}
+
+
+
+.control-button:disabled {
+    background: #7f8c8d;
+    cursor: not-allowed;
+}
+
+/* Cartas */
+.card {
+    width: 120px;
+    height: 180px;
+    margin: 0 10px;
+    background: var(--card-background);
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    color: var(--text-color);
+    font-size: 24px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    transition: all 0.5s;
+    transform: rotateY(180deg);
+    backface-visibility: hidden;
+}
+
+.card.revealed {
+    transform: rotateY(0);
+}
+
+/* Títulos */
+h2 {
+    font-size: 22px;
+    color: var(--highlight-color);
+    margin-top: 20px;
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 5px;
+    text-align: center;
+}
+
+
+    </style>
+</head>
+<body>
+    <div id="casino-container">
+        <div id="game-area">
+            <div id="player-stats">
+                <div id="balance">💰 Saldo: R$ 10,000</div>
+                <div id="current-bet">💸 Aposta: R$ 0</div>
+            </div>
+
+            <div id="table">
+                <div id="dealer-hand" class="hand">
+                    <div class="card dealer-card"></div>
+                    <div class="card dealer-card"></div>
+                </div>
+
+                <div id="message-box"></div>
+
+                <div id="player-hand" class="hand">
+                    <div class="card player-card"></div>
+                    <div class="card player-card"></div>
+                </div>
+            </div>
+
+            <div id="game-controls">
+                <button id="start-game" class="control-button">Iniciar Jogo</button>
+                <button id="hit-card" class="control-button" disabled>Pedir Carta</button>
+                <button id="stand" class="control-button" disabled>Parar</button>
+            </div>
+        </div>
+
+        <div id="sidebar">
+            <h2>🎲 Apostas</h2>
+            <div id="bet-controls">
+                <input type="number" id="bet-amount" min="10" max="1000" step="10" value="10">
+                <button onclick="game.placeBet()" class="control-button">Confirmar Aposta</button>
+            </div>
+
+            <h2>🏆 Estatísticas</h2>
+            <div id="game-stats">
+                <p>Vitórias: <span id="wins">0</span></p>
+                <p>Derrotas: <span id="losses">0</span></p>
+                <p>Empates: <span id="draws">0</span></p>
+            </div>
+
+            <h2>🔥 Ranking</h2>
+            <div id="leaderboard">
+                <ol id="top-players"></ol>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        class BlackjackGame {
+            constructor() {
+                this.deck = [];
+                this.playerHand = [];
+                this.dealerHand = [];
+                this.balance = 10000;
+                this.currentBet = 10;
+                this.stats = { wins: 0, losses: 0, draws: 0 };
+                this.leaderboard = [];
+                this.initializeElements();
+                this.setupEventListeners();
+                this.updateDisplay();
+            }
+
+            initializeElements() {
+                this.balanceEl = document.getElementById('balance');
+                this.currentBetEl = document.getElementById('current-bet');
+                this.messageBox = document.getElementById('message-box');
+                this.startGameBtn = document.getElementById('start-game');
+                this.hitCardBtn = document.getElementById('hit-card');
+                this.standBtn = document.getElementById('stand');
+                this.betInput = document.getElementById('bet-amount');
+                this.playerHandEl = document.getElementById('player-hand');
+                this.dealerHandEl = document.getElementById('dealer-hand');
+                
+                this.winsEl = document.getElementById('wins');
+                this.lossesEl = document.getElementById('losses');
+                this.drawsEl = document.getElementById('draws');
+                this.leaderboardEl = document.getElementById('top-players');
+            }
+
+            setupEventListeners() {
+                this.startGameBtn.addEventListener('click', () => this.startGame());
+                this.hitCardBtn.addEventListener('click', () => this.hitCard());
+                this.standBtn.addEventListener('click', () => this.stand());
+                this.betInput.addEventListener('change', () => {
+                    this.currentBet = parseInt(this.betInput.value);
+                });
+            }
+
+            createDeck() {
+                const suits = ['♠', '♣', '♥', '♦'];
+                const values = ['2','3','4','5','6','7','8','9','10','J','Q','K','A'];
+                this.deck = suits.flatMap(suit => 
+                    values.map(value => ({ value, suit }))
+                );
+                this.shuffleDeck();
+            }
+
+            shuffleDeck() {
+                for (let i = this.deck.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [this.deck[i], this.deck[j]] = [this.deck[j], this.deck[i]];
+                }
+            }
+
+            calculateHandValue(hand) {
+                let value = 0;
+                let aceCount = hand.filter(card => card.value === 'A').length;
+
+                for (let card of hand) {
+                    if (['J', 'Q', 'K'].includes(card.value)) {
+                        value += 10;
+                    } else if (card.value === 'A') {
+                        value += (value + 11 <= 21) ? 11 : 1;
+                    } else {
+                        value += parseInt(card.value);
+                    }
+                }
+
+                return value;
+            }
+
+            drawCard(hand, reveal = false) {
+                const card = this.deck.pop();
+                hand.push(card);
+                this.renderCard(card, hand === this.playerHand ? this.playerHandEl : this.dealerHandEl, reveal);
+                return card;
+            }
+
+            renderCard(card, container, reveal = false) {
+                const cardEl = container.querySelector('.card:not(.revealed)');
+                if (cardEl) {
+                    cardEl.textContent = reveal ? `${card.value}${card.suit}` : '❓';
+                    cardEl.classList.add('revealed');
+                }
+            }
+
+            startGame() {
+                if (this.currentBet > this.balance) {
+                    this.showMessage('Saldo insuficiente!', 'error');
+                    return;
+                }
+
+                this.createDeck();
+                this.playerHand = [];
+                this.dealerHand = [];
+                this.resetHandDisplay();
+
+                this.drawCard(this.playerHand, true);
+                this.drawCard(this.dealerHand);
+                this.drawCard(this.playerHand, true);
+                this.drawCard(this.dealerHand);
+
+                this.startGameBtn.disabled = true;
+                this.hitCardBtn.disabled = false;
+                this.standBtn.disabled = false;
+
+                this.updateDisplay();
+            }
+
+            hitCard() {
+    // Draw a new card for the player
+    const newCard = this.drawCard(this.playerHand, true);
+    
+    // Show a message about the card drawn
+    this.showMessage(`Você pediu ${newCard.value}${newCard.suit}`);
+    
+    // Calculate the current hand value
+    const playerValue = this.calculateHandValue(this.playerHand);
+
+    // If player's hand value is over 21, end the game
+    if (playerValue > 21) {
+        this.showMessage('Estourou! Você perdeu.');
+        this.endGame('Estourou! Você perdeu.', false);
+    } else if (playerValue === 21) {
+        // If player hits 21 exactly, automatically stand
+        this.showMessage('Blackjack!');
+        this.stand();
+    }
+
+    // Optional: disable hit button if hand is close to 21
+    if (playerValue >= 19) {
+        this.hitCardBtn.disabled = true;
+    }
+}
+            stand() {
+                this.revealDealerCards();
+                const playerValue = this.calculateHandValue(this.playerHand);
+                let dealerValue = this.calculateHandValue(this.dealerHand);
+
+                while (dealerValue < 17) {
+                    this.drawCard(this.dealerHand, true);
+                    dealerValue = this.calculateHandValue(this.dealerHand);
+                }
+
+                if (dealerValue > 21 || playerValue > dealerValue) {
+                    this.endGame('Você ganhou!', true);
+                } else if (playerValue < dealerValue) {
+                    this.endGame('Dealer ganhou.', false);
+                } else {
+                    this.endGame('Empate!');
+                }
+            }
+
+            revealDealerCards() {
+                this.dealerHandEl.querySelectorAll('.card').forEach(cardEl => {
+                    const index = Array.from(this.dealerHandEl.children).indexOf(cardEl);
+                    const card = this.dealerHand[index];
+                    cardEl.textContent = `${card.value}${card.suit}`;
+                    cardEl.classList.add('revealed');
+                });
+            }
+
+            endGame(message, playerWon = null) {
+                this.showMessage(message);
+
+                if (playerWon === true) {
+                    this.balance += this.currentBet;
+                    this.stats.wins++;
+                } else if (playerWon === false) {
+                    this.balance -= this.currentBet;
+                    this.stats.losses++;
+                } else {
+                    this.stats.draws++;
+                }
+
+                this.startGameBtn.disabled = false;
+                this.hitCardBtn.disabled = true;
+                this.standBtn.disabled = true;
+
+                this.updateDisplay();
+                this.updateLeaderboard();
+            }
+
+            updateDisplay() {
+                this.balanceEl.textContent = `💰 Saldo: R$ ${this.balance.toLocaleString()}`;
+                this.currentBetEl.textContent = `💸 Aposta: R$ ${this.currentBet}`;
+                
+                this.winsEl.textContent = this.stats.wins;
+                this.lossesEl.textContent = this.stats.losses;
+                this.drawsEl.textContent = this.stats.draws;
+            }
+
+            resetHandDisplay() {
+                this.playerHandEl.innerHTML = 
+                    '<div class="card player-card"></div><div class="card player-card"></div>';
+                this.dealerHandEl.innerHTML = 
+                    '<div class="card dealer-card"></div><div class="card dealer-card"></div>';
+            }
+
+            placeBet() {
+                const betAmount = parseInt(this.betInput.value);
+                if (betAmount > this.balance) {
+                    this.showMessage('Aposta maior que seu saldo!', 'error');
+                    return;
+                }
+                this.currentBet = betAmount;
+                this.updateDisplay();
+            }
+
+            showMessage(message, type = 'info') {
+                this.messageBox.textContent = message;
+                this.messageBox.style.color = type === 'error' ? '#e74c3c' : '#f1c40f';
+            }
+
+            updateLeaderboard() {
+                this.leaderboard.push({
+                    name: `Jogador${Math.floor(Math.random() * 1000)}`,
+                    balance: this.balance
+                });
+
+                this.leaderboard.sort((a, b) => b.balance - a.balance);
+                this.leaderboard = this.leaderboard.slice(0, 5);
+
+                this.leaderboardEl.innerHTML = this.leaderboard.map((player, index) => 
+                    `<li>🏅 ${index + 1}. ${player.name} - R$ ${player.balance.toLocaleString()}</li>`
+                ).join('');
+            }
+        }
+
+        const game = new BlackjackGame();
+        
+    </script>
+</body>
+</html>
